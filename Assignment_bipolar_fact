@@ -19,13 +19,13 @@ for row in table.findAll('div', attrs = {'class':'lister-item mode-detail'}):
         continue
     celeb['Name'] = row.img['alt'] 
     celeb['Img']=row.img['src']
-    celeb['Profession and famous work'] = row.p.text
+    celeb['Profession_and_famous_work'] = row.p.text
     celebs.append(celeb)
 #The extracted data is written into a csv fie
 filename = 'Indian_celeb_assignment.csv'
 import csv
 with open(filename,'w') as f:
-    w=csv.DictWriter(f,['Sr no','Name','Img','Profession'])
+    w=csv.DictWriter(f,['Sr no','Name','Img','Profession_and_famous_work'])
     w.writeheader()
     for celeb in celebs:
         w.writerow(celeb)
