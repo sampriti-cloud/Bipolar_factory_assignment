@@ -1,0 +1,31 @@
+#beautifulsoup4, html5lib and request libraries are to be installed 
+import requests
+#Requesting to view the contents off the give url
+URL="https://www.imdb.com/list/ls004440136/"
+r = requests.get(URL) 
+#print(r.content)
+from bs4 import BeautifulSoup 
+soup = BeautifulSoup(r.content, 'html5lib')
+#print(soup.prettify())
+celebs=[] 
+#Running loop over the page to extract the relevant content
+table = soup.find('div',attrs = {'id':'wrapper'})
+#print(table.prettify())
+i=0
+for row in table.findAll('div', attrs = {'class':'lister-item mode-detail'}):
+    i=i+1
+    celeb= {} 
+    if (i)==35:
+        continue
+    celeb['Name'] = row.img['alt'] 
+    celeb['Img']=row.img['src']
+    celeb['Profession and famous work'] = row.p.text
+    celebs.append(celeb)
+#The extracted data is written into a csv fie
+filename = 'Indian_celeb_assignment.csv'
+import csv
+with open(filename,'w') as f:
+    w=csv.DictWriter(f,['Sr no','Name','Img','Profession'])
+    w.writeheader()
+    for celeb in celebs:
+        w.writerow(celeb)
